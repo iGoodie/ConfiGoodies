@@ -1,0 +1,14 @@
+ConfigSchema = ObjectSchema.of(
+    StringSchema("nickname", null, null),
+    StringSchema("email", StringValidator().withPattern(Patterns.EMAIL), null),
+    ArraySchema("luckyNumbers", IntegerValidator(), AlphabeticalSorter())
+)
+
+const JSON = JSONReader.read(SomeFile)
+const goodie = JSONToConfiGoodie.convert(JSON)
+
+const result = ConfigSchema.check(goodie)
+
+if(result.isModified()) {
+
+}
