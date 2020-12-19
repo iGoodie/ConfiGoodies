@@ -1,11 +1,11 @@
 package net.programmer.igoodie.runtime;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class ObjectGoodie implements ConfigGoodie, Iterable<Map.Entry<String, ConfigGoodie>> {
+public class ObjectGoodie implements ConfigGoodie,
+        Iterable<Map.Entry<String, ConfigGoodie>>,
+        Map<String, ConfigGoodie> {
 
     protected Map<String, ConfigGoodie> properties;
 
@@ -40,8 +40,75 @@ public class ObjectGoodie implements ConfigGoodie, Iterable<Map.Entry<String, Co
         return objectGoodie;
     }
 
-    public Map<String, ConfigGoodie> getProperties() {
-        return properties;
+    @Override
+    public int size() {
+        return properties.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return properties.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return properties.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return properties.containsValue(value);
+    }
+
+    @Override
+    public ConfigGoodie get(Object key) {
+        return properties.get(key);
+    }
+
+    @Override
+    public ConfigGoodie put(String key, ConfigGoodie value) {
+        return properties.put(key, value);
+    }
+
+    @Override
+    public ConfigGoodie remove(Object key) {
+        return properties.remove(key);
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ? extends ConfigGoodie> m) {
+        properties.putAll(m);
+    }
+
+    @Override
+    public void clear() {
+        properties.clear();
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return properties.keySet();
+    }
+
+    @Override
+    public Collection<ConfigGoodie> values() {
+        return properties.values();
+    }
+
+    @Override
+    public Set<Entry<String, ConfigGoodie>> entrySet() {
+        return properties.entrySet();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // TODO: Check types too (?)
+        return properties.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return properties.hashCode();
     }
 
     @Override
