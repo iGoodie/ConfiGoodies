@@ -9,6 +9,7 @@ import net.programmer.igoodie.runtime.GoodieObject;
 import net.programmer.igoodie.sanitizer.LowercaseSanitizer;
 import net.programmer.igoodie.schema.ObjectSchema;
 import net.programmer.igoodie.schema.PrimitiveSchema;
+import net.programmer.igoodie.util.CommonPatterns;
 import net.programmer.igoodie.validator.StringValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ public class UsageTests {
                 new PrimitiveSchema("username", "<Your Nickname Here>")
                         .withValidator(new StringValidator().withLength(0, 20))
                         .withSanitizers(new LowercaseSanitizer()),
+
+                new PrimitiveSchema("email", "<Your email here>")
+                        .withValidator(new StringValidator().withPattern(CommonPatterns.EMAIL_PATTERN)),
 
                 new PrimitiveSchema("birthDate", 2020)
                         .withValidator(new StringValidator().withLength(0, 20))
