@@ -4,24 +4,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ArrayGoodie implements ConfigGoodie,
-        Iterable<ConfigGoodie>,
-        List<ConfigGoodie> {
+public class GoodieArray implements GoodieElement,
+        Iterable<GoodieElement>,
+        List<GoodieElement> {
 
-    protected List<ConfigGoodie> elements;
+    protected List<GoodieElement> elements;
 
-    public ArrayGoodie() {
+    public GoodieArray() {
         this(new LinkedList<>());
     }
 
-    public ArrayGoodie(List<ConfigGoodie> elements) {
+    public GoodieArray(List<GoodieElement> elements) {
         this.elements = elements;
     }
 
     @Override
-    public ConfigGoodie deepCopy() {
-        ArrayGoodie arrayGoodie = new ArrayGoodie();
-        for (ConfigGoodie element : this.elements) {
+    public GoodieElement deepCopy() {
+        GoodieArray arrayGoodie = new GoodieArray();
+        for (GoodieElement element : this.elements) {
             arrayGoodie.elements.add(element.deepCopy());
         }
         return arrayGoodie;
@@ -43,7 +43,7 @@ public class ArrayGoodie implements ConfigGoodie,
     }
 
     @Override
-    public Iterator<ConfigGoodie> iterator() {
+    public Iterator<GoodieElement> iterator() {
         return elements.iterator();
     }
 
@@ -58,7 +58,7 @@ public class ArrayGoodie implements ConfigGoodie,
     }
 
     @Override
-    public boolean add(ConfigGoodie goodie) {
+    public boolean add(GoodieElement goodie) {
         return elements.add(goodie);
     }
 
@@ -73,12 +73,12 @@ public class ArrayGoodie implements ConfigGoodie,
     }
 
     @Override
-    public boolean addAll(Collection<? extends ConfigGoodie> c) {
+    public boolean addAll(Collection<? extends GoodieElement> c) {
         return elements.addAll(c);
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends ConfigGoodie> c) {
+    public boolean addAll(int index, Collection<? extends GoodieElement> c) {
         return elements.addAll(index, c);
     }
 
@@ -98,22 +98,22 @@ public class ArrayGoodie implements ConfigGoodie,
     }
 
     @Override
-    public ConfigGoodie get(int index) {
+    public GoodieElement get(int index) {
         return elements.get(index);
     }
 
     @Override
-    public ConfigGoodie set(int index, ConfigGoodie element) {
+    public GoodieElement set(int index, GoodieElement element) {
         return elements.set(index, element);
     }
 
     @Override
-    public void add(int index, ConfigGoodie element) {
+    public void add(int index, GoodieElement element) {
         elements.add(index, element);
     }
 
     @Override
-    public ConfigGoodie remove(int index) {
+    public GoodieElement remove(int index) {
         return elements.remove(index);
     }
 
@@ -128,34 +128,34 @@ public class ArrayGoodie implements ConfigGoodie,
     }
 
     @Override
-    public ListIterator<ConfigGoodie> listIterator() {
+    public ListIterator<GoodieElement> listIterator() {
         return elements.listIterator();
     }
 
     @Override
-    public ListIterator<ConfigGoodie> listIterator(int index) {
+    public ListIterator<GoodieElement> listIterator(int index) {
         return elements.listIterator(index);
     }
 
     @Override
-    public List<ConfigGoodie> subList(int fromIndex, int toIndex) {
+    public List<GoodieElement> subList(int fromIndex, int toIndex) {
         return elements.subList(fromIndex, toIndex);
     }
 
     @Override
     public String toString() {
         return "[" + elements.stream()
-                .map(ConfigGoodie::toString)
+                .map(GoodieElement::toString)
                 .collect(Collectors.joining(",")) + "]";
     }
 
-    public static ArrayGoodie of(Object... elements) {
-        return new ArrayGoodie(Stream.of(elements)
-                .map(PrimitiveGoodie::from).collect(Collectors.toList()));
+    public static GoodieArray of(Object... elements) {
+        return new GoodieArray(Stream.of(elements)
+                .map(GoodiePrimitive::from).collect(Collectors.toList()));
     }
 
-    public static ArrayGoodie of(ConfigGoodie... elements) {
-        return new ArrayGoodie(Arrays.asList(elements));
+    public static GoodieArray of(GoodieElement... elements) {
+        return new GoodieArray(Arrays.asList(elements));
     }
 
 }

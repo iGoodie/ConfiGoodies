@@ -1,22 +1,21 @@
 package net.programmer.igoodie.format;
 
 import com.google.gson.*;
-import com.google.gson.stream.JsonWriter;
 import net.programmer.igoodie.converter.GoodieToGson;
 import net.programmer.igoodie.converter.GsonToGoodie;
 import net.programmer.igoodie.exception.ParseException;
-import net.programmer.igoodie.runtime.ObjectGoodie;
+import net.programmer.igoodie.runtime.GoodieObject;
 
-public class GsonGoodieFormat extends GoodieFormat<JsonObject, ObjectGoodie> {
+public class GsonGoodieFormat extends GoodieFormat<JsonObject, GoodieObject> {
 
     @Override
-    public ObjectGoodie serializeGoodie(JsonObject externalFormat) {
+    public GoodieObject writeToGoodie(JsonObject externalFormat) {
         return GsonToGoodie.convertObject(externalFormat);
     }
 
     @Override
-    public JsonObject deserializeGoodie(ObjectGoodie goodie) {
-        return GoodieToGson.convertObject(goodie);
+    public JsonObject readFromGoodie(GoodieObject goodieObject) {
+        return GoodieToGson.convertObject(goodieObject);
     }
 
     @Override

@@ -4,14 +4,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.programmer.igoodie.runtime.ArrayGoodie;
-import net.programmer.igoodie.runtime.ConfigGoodie;
-import net.programmer.igoodie.runtime.ObjectGoodie;
-import net.programmer.igoodie.runtime.PrimitiveGoodie;
+import net.programmer.igoodie.runtime.GoodieArray;
+import net.programmer.igoodie.runtime.GoodieElement;
+import net.programmer.igoodie.runtime.GoodieObject;
+import net.programmer.igoodie.runtime.GoodiePrimitive;
 
 public final class GsonToGoodie {
 
-    public static ConfigGoodie convert(JsonElement jsonElement) {
+    public static GoodieElement convert(JsonElement jsonElement) {
         if (jsonElement.isJsonObject())
             return convertObject(jsonElement.getAsJsonObject());
         if (jsonElement.isJsonArray())
@@ -22,26 +22,26 @@ public final class GsonToGoodie {
         return null; // <-- No corresponding Goodie type exists
     }
 
-    public static ObjectGoodie convertObject(JsonObject jsonObject) {
-        ObjectGoodie goodieObject = new ObjectGoodie();
+    public static GoodieObject convertObject(JsonObject jsonObject) {
+        GoodieObject goodieObject = new GoodieObject();
         for (String propertyName : jsonObject.keySet()) {
-            ConfigGoodie goodie = convert(jsonObject.get(propertyName));
-            goodieObject.put(propertyName, goodie);
+            GoodieElement goodieElement = convert(jsonObject.get(propertyName));
+            goodieObject.put(propertyName, goodieElement);
         }
         return goodieObject;
     }
 
-    public static ArrayGoodie convertArray(JsonArray jsonArray) {
-        ArrayGoodie goodieArray = new ArrayGoodie();
+    public static GoodieArray convertArray(JsonArray jsonArray) {
+        GoodieArray goodieArray = new GoodieArray();
         for (JsonElement jsonElement : jsonArray) {
-            ConfigGoodie goodie = convert(jsonElement);
-            goodieArray.add(goodie);
+            GoodieElement goodieElement = convert(jsonElement);
+            goodieArray.add(goodieElement);
         }
         return goodieArray;
     }
 
-    public static PrimitiveGoodie convertPrimitive(JsonPrimitive jsonPrimitive) {
-        return PrimitiveGoodie.from(
+    public static GoodiePrimitive convertPrimitive(JsonPrimitive jsonPrimitive) {
+        return GoodiePrimitive.from(
                 jsonPrimitive.isBoolean() ? jsonPrimitive.getAsBoolean()
                         : jsonPrimitive.isString() ? jsonPrimitive.getAsString()
                         : jsonPrimitive.isNumber() ? jsonPrimitive.getAsNumber()

@@ -1,8 +1,8 @@
 package net.programmer.igoodie.schema;
 
-import net.programmer.igoodie.runtime.ConfigGoodie;
+import net.programmer.igoodie.runtime.GoodieElement;
 
-public class SchematicResult<T extends ConfigGoodie> {
+public class SchematicResult<T extends GoodieElement> {
 
     protected T input;
     protected T modified;
@@ -44,7 +44,7 @@ public class SchematicResult<T extends ConfigGoodie> {
         return sanitized;
     }
 
-    public static <T extends ConfigGoodie> SchematicResult<T> invalidType(T defaultValue) {
+    public static <T extends GoodieElement> SchematicResult<T> invalidType(T defaultValue) {
         SchematicResult<T> result = new SchematicResult<>(null);
         result.validatedTo(defaultValue);
         return result;

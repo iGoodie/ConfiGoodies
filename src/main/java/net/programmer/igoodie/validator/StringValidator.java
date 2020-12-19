@@ -1,11 +1,11 @@
 package net.programmer.igoodie.validator;
 
 import net.programmer.igoodie.exception.ValidationException;
-import net.programmer.igoodie.runtime.PrimitiveGoodie;
+import net.programmer.igoodie.runtime.GoodiePrimitive;
 
 import java.util.regex.Pattern;
 
-public class StringValidator extends ConfigValidator<PrimitiveGoodie> {
+public class StringValidator extends GoodieValidator<GoodiePrimitive> {
 
     protected int minLength;
     protected int maxLength;
@@ -33,7 +33,7 @@ public class StringValidator extends ConfigValidator<PrimitiveGoodie> {
     }
 
     @Override
-    public void validate(String propertyName, PrimitiveGoodie goodie) {
+    public void validate(String propertyName, GoodiePrimitive goodie) {
         if (goodie.getType() != String.class)
             throw new ValidationException(propertyName, "Invalid data type. String expected.");
 
@@ -41,10 +41,8 @@ public class StringValidator extends ConfigValidator<PrimitiveGoodie> {
 
         if (minLength != -1 && stringValue.length() < minLength)
             throw new ValidationException(propertyName, "Expected minimum length of " + minLength);
-
         if (maxLength != -1 && stringValue.length() > maxLength)
             throw new ValidationException(propertyName, "Expected maximum length of " + maxLength);
-
         if (pattern != null && !pattern.matcher(stringValue).matches())
             throw new ValidationException(propertyName, "Expected to match regex: " + pattern);
     }

@@ -1,14 +1,14 @@
 package net.programmer.igoodie;
 
 import net.programmer.igoodie.format.GoodieFormat;
-import net.programmer.igoodie.runtime.ConfigGoodie;
-import net.programmer.igoodie.schema.ConfigSchema;
+import net.programmer.igoodie.runtime.GoodieElement;
+import net.programmer.igoodie.schema.GoodieSchema;
 import net.programmer.igoodie.util.FileUtilities;
 
 import java.io.File;
 import java.io.IOException;
 
-public abstract class GoodieConfiguration<E, G extends ConfigGoodie> {
+public abstract class GoodieConfiguration<E, G extends GoodieElement> {
 
     protected GoodieFormat<E, G> format;
 
@@ -18,9 +18,9 @@ public abstract class GoodieConfiguration<E, G extends ConfigGoodie> {
 
     public abstract File getFile();
 
-    public abstract ConfigSchema<G> getRootSchema();
+    public abstract GoodieSchema<G> getRootSchema();
 
-    public ConfigGoodie readGoodies() throws IOException {
+    public GoodieElement readGoodies() throws IOException {
         File configFile = getFile();
 
         if (configFile.isDirectory())
@@ -30,7 +30,7 @@ public abstract class GoodieConfiguration<E, G extends ConfigGoodie> {
             configFile.getParentFile().mkdirs();
             configFile.createNewFile();
             G defaultValue = getRootSchema().getDefaultValue();
-            E defaultExternal = format.deserializeGoodie(defaultValue);
+            E defaultExternal = format.readFromGoodie(defaultValue);
             String text = format.writeToString(defaultExternal);
             FileUtilities.writeToFile(text, configFile);
         }
@@ -38,7 +38,7 @@ public abstract class GoodieConfiguration<E, G extends ConfigGoodie> {
         String text = FileUtilities.stringFromFile(configFile);
 
         E externalConfig = format.readFromString(text);
-        return format.serializeGoodie(externalConfig);
+        return format.writeToGoodie(externalConfig);
     }
 
 }

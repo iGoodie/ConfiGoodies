@@ -1,29 +1,29 @@
 package net.programmer.igoodie.runtime;
 
-public class PrimitiveGoodie implements ConfigGoodie {
+public class GoodiePrimitive implements GoodieElement {
 
     private Class<?> type;
     private Object value;
 
-    private PrimitiveGoodie(Object value, Class<?> type) {
+    private GoodiePrimitive(Object value, Class<?> type) {
         checkNull(value);
         this.type = type;
         this.value = value;
     }
 
-    public PrimitiveGoodie(Boolean value) {
+    public GoodiePrimitive(Boolean value) {
         this(value, Boolean.class);
     }
 
-    public PrimitiveGoodie(String value) {
+    public GoodiePrimitive(String value) {
         this(value, String.class);
     }
 
-    public PrimitiveGoodie(Character value) {
+    public GoodiePrimitive(Character value) {
         this(value, Character.class);
     }
 
-    public PrimitiveGoodie(Number value) {
+    public GoodiePrimitive(Number value) {
         this(value, Number.class);
     }
 
@@ -34,8 +34,8 @@ public class PrimitiveGoodie implements ConfigGoodie {
     }
 
     @Override
-    public PrimitiveGoodie deepCopy() {
-        return new PrimitiveGoodie(value, type);
+    public GoodiePrimitive deepCopy() {
+        return new GoodiePrimitive(value, type);
     }
 
     public Class<?> getType() {
@@ -69,18 +69,15 @@ public class PrimitiveGoodie implements ConfigGoodie {
         return value.toString();
     }
 
-    public static PrimitiveGoodie from(Object value) {
+    public static GoodiePrimitive from(Object value) {
         if (value instanceof String)
-            return new PrimitiveGoodie((String) value);
-
+            return new GoodiePrimitive((String) value);
         if (value instanceof Number)
-            return new PrimitiveGoodie(((Number) value));
-
+            return new GoodiePrimitive(((Number) value));
         if (value instanceof Boolean)
-            return new PrimitiveGoodie(((Boolean) value));
-
+            return new GoodiePrimitive(((Boolean) value));
         if (value instanceof Character)
-            return new PrimitiveGoodie(((Character) value));
+            return new GoodiePrimitive(((Character) value));
 
         throw new IllegalArgumentException();
     }

@@ -3,9 +3,9 @@ import com.google.gson.JsonParser;
 import data.TestConfiguration;
 import net.programmer.igoodie.converter.GoodieToGson;
 import net.programmer.igoodie.converter.GsonToGoodie;
-import net.programmer.igoodie.runtime.ArrayGoodie;
-import net.programmer.igoodie.runtime.ConfigGoodie;
-import net.programmer.igoodie.runtime.ObjectGoodie;
+import net.programmer.igoodie.runtime.GoodieArray;
+import net.programmer.igoodie.runtime.GoodieElement;
+import net.programmer.igoodie.runtime.GoodieObject;
 import net.programmer.igoodie.sanitizer.LowercaseSanitizer;
 import net.programmer.igoodie.schema.ObjectSchema;
 import net.programmer.igoodie.schema.PrimitiveSchema;
@@ -19,9 +19,9 @@ public class UsageTests {
 
     @Test
     public void test1() {
-        ObjectGoodie goodie = new ObjectGoodie()
+        GoodieObject goodie = new GoodieObject()
                 .with("username", "iGoodie")
-                .with("friends", ArrayGoodie.of("KaptainWutax", "JML"))
+                .with("friends", GoodieArray.of("KaptainWutax", "JML"))
                 .with("birthDate", 1997);
 
         System.out.println(goodie);
@@ -44,7 +44,7 @@ public class UsageTests {
     @Test
     public void test3() {
         JsonElement jsonElement = JsonParser.parseString("{a:123, b:[1,2,3,4,5,6], c:{foo:\"Bar\"}}");
-        ConfigGoodie convertedGoodie = GsonToGoodie.convert(jsonElement);
+        GoodieElement convertedGoodie = GsonToGoodie.convert(jsonElement);
         JsonElement convertedJson = GoodieToGson.convert(convertedGoodie);
         System.out.println(convertedGoodie);
         System.out.println(convertedJson);

@@ -1,15 +1,15 @@
 package net.programmer.igoodie.format;
 
-import net.programmer.igoodie.runtime.ConfigGoodie;
+import net.programmer.igoodie.runtime.GoodieElement;
 
-public abstract class GoodieFormat<E, G extends ConfigGoodie> {
+public abstract class GoodieFormat<E, G extends GoodieElement> {
 
-    public abstract G serializeGoodie(E externalFormat);
+    public abstract G writeToGoodie(E externalFormat);
 
-    public abstract E deserializeGoodie(G goodie);
-
-    public abstract E readFromString(String text);
+    public abstract E readFromGoodie(G goodie);
 
     public abstract String writeToString(E externalFormat);
+
+    public abstract E readFromString(String text);
 
 }

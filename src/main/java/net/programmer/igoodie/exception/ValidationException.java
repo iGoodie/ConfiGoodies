@@ -1,6 +1,6 @@
 package net.programmer.igoodie.exception;
 
-public class ValidationException extends RuntimeException {
+public class ValidationException extends GoodieException {
 
     protected String propertyName;
     protected String reason;

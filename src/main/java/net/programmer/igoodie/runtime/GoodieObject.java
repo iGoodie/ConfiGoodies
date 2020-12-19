@@ -3,37 +3,37 @@ package net.programmer.igoodie.runtime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ObjectGoodie implements ConfigGoodie,
-        Iterable<Map.Entry<String, ConfigGoodie>>,
-        Map<String, ConfigGoodie> {
+public class GoodieObject implements GoodieElement,
+        Iterable<Map.Entry<String, GoodieElement>>,
+        Map<String, GoodieElement> {
 
-    protected Map<String, ConfigGoodie> properties;
+    protected Map<String, GoodieElement> properties;
 
-    public ObjectGoodie() {
+    public GoodieObject() {
         this(new HashMap<>());
     }
 
-    public ObjectGoodie(Map<String, ConfigGoodie> properties) {
+    public GoodieObject(Map<String, GoodieElement> properties) {
         this.properties = properties;
     }
 
-    public ObjectGoodie with(String key, Object value) {
-        if (!(value instanceof ConfigGoodie)) {
-            this.properties.put(key, PrimitiveGoodie.from(value));
+    public GoodieObject with(String key, Object value) {
+        if (!(value instanceof GoodieElement)) {
+            this.properties.put(key, GoodiePrimitive.from(value));
             return this;
         }
 
-        return with(key, ((ConfigGoodie) value));
+        return with(key, ((GoodieElement) value));
     }
 
-    public ObjectGoodie with(String key, ConfigGoodie value) {
+    public GoodieObject with(String key, GoodieElement value) {
         this.properties.put(key, value);
         return this;
     }
 
     @Override
-    public ConfigGoodie deepCopy() {
-        ObjectGoodie objectGoodie = new ObjectGoodie();
+    public GoodieElement deepCopy() {
+        GoodieObject objectGoodie = new GoodieObject();
         this.properties.forEach((name, value) -> {
             objectGoodie.properties.put(name, value.deepCopy());
         });
@@ -61,22 +61,22 @@ public class ObjectGoodie implements ConfigGoodie,
     }
 
     @Override
-    public ConfigGoodie get(Object key) {
+    public GoodieElement get(Object key) {
         return properties.get(key);
     }
 
     @Override
-    public ConfigGoodie put(String key, ConfigGoodie value) {
+    public GoodieElement put(String key, GoodieElement value) {
         return properties.put(key, value);
     }
 
     @Override
-    public ConfigGoodie remove(Object key) {
+    public GoodieElement remove(Object key) {
         return properties.remove(key);
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends ConfigGoodie> m) {
+    public void putAll(Map<? extends String, ? extends GoodieElement> m) {
         properties.putAll(m);
     }
 
@@ -91,12 +91,12 @@ public class ObjectGoodie implements ConfigGoodie,
     }
 
     @Override
-    public Collection<ConfigGoodie> values() {
+    public Collection<GoodieElement> values() {
         return properties.values();
     }
 
     @Override
-    public Set<Entry<String, ConfigGoodie>> entrySet() {
+    public Set<Entry<String, GoodieElement>> entrySet() {
         return properties.entrySet();
     }
 
@@ -119,7 +119,7 @@ public class ObjectGoodie implements ConfigGoodie,
     }
 
     @Override
-    public Iterator<Map.Entry<String, ConfigGoodie>> iterator() {
+    public Iterator<Map.Entry<String, GoodieElement>> iterator() {
         return properties.entrySet().iterator();
     }
 

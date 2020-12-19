@@ -1,33 +1,34 @@
 package net.programmer.igoodie.schema;
 
 import net.programmer.igoodie.exception.ValidationException;
-import net.programmer.igoodie.runtime.ConfigGoodie;
-import net.programmer.igoodie.runtime.PrimitiveGoodie;
-import net.programmer.igoodie.sanitizer.ConfigSanitizer;
-import net.programmer.igoodie.validator.ConfigValidator;
+import net.programmer.igoodie.runtime.GoodieElement;
+import net.programmer.igoodie.runtime.GoodieObject;
+import net.programmer.igoodie.runtime.GoodiePrimitive;
+import net.programmer.igoodie.sanitizer.GoodieSanitizer;
+import net.programmer.igoodie.validator.GoodieValidator;
 
-public class PrimitiveSchema extends ConfigSchema<PrimitiveGoodie> {
+public class PrimitiveSchema extends GoodieSchema<GoodiePrimitive> {
 
-    protected PrimitiveGoodie defaultValue;
+    protected GoodiePrimitive defaultValue;
 
     public PrimitiveSchema(String propertyName, Object defaultValue) {
-        this(propertyName, PrimitiveGoodie.from(defaultValue));
+        this(propertyName, GoodiePrimitive.from(defaultValue));
     }
 
-    public PrimitiveSchema(String propertyName, PrimitiveGoodie defaultValue) {
+    public PrimitiveSchema(String propertyName, GoodiePrimitive defaultValue) {
         super(propertyName);
         this.defaultValue = defaultValue;
     }
 
     @SafeVarargs
-    public PrimitiveSchema(String propertyName, PrimitiveGoodie defaultValue, ConfigValidator validator, ConfigSanitizer<PrimitiveGoodie>... sanitizers) {
+    public PrimitiveSchema(String propertyName, GoodiePrimitive defaultValue, GoodieValidator<GoodiePrimitive> validator, GoodieSanitizer<GoodiePrimitive>... sanitizers) {
         super(propertyName, validator, sanitizers);
         this.defaultValue = defaultValue;
     }
 
     @Override
-    public PrimitiveGoodie getDefaultValue() {
-        PrimitiveGoodie defaultGoodie = this.defaultValue.deepCopy();
+    public GoodiePrimitive getDefaultValue() {
+        GoodiePrimitive defaultGoodie = this.defaultValue.deepCopy();
         try {
             return checkAndSanitize(defaultGoodie);
 
@@ -37,7 +38,7 @@ public class PrimitiveSchema extends ConfigSchema<PrimitiveGoodie> {
     }
 
     @Override
-    public SchematicResult<?> check(ConfigGoodie goodie) {
+    public SchematicResult<?> check(GoodieElement goodie) {
         return null;
     }
 

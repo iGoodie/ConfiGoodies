@@ -1,10 +1,10 @@
 package net.programmer.igoodie.sanitizer;
 
-import net.programmer.igoodie.runtime.PrimitiveGoodie;
+import net.programmer.igoodie.runtime.GoodiePrimitive;
 
 import java.util.Locale;
 
-public class LowercaseSanitizer extends ConfigSanitizer<PrimitiveGoodie> {
+public class LowercaseSanitizer extends GoodieSanitizer<GoodiePrimitive> {
 
     protected Locale locale;
 
@@ -15,9 +15,9 @@ public class LowercaseSanitizer extends ConfigSanitizer<PrimitiveGoodie> {
     }
 
     @Override
-    public PrimitiveGoodie sanitize(PrimitiveGoodie input) {
-        String stringValue = input.getStringValue();
-        return PrimitiveGoodie.from(locale == null
+    public GoodiePrimitive sanitize(GoodiePrimitive goodie) {
+        String stringValue = goodie.getStringValue();
+        return GoodiePrimitive.from(locale == null
                 ? stringValue.toLowerCase()
                 : stringValue.toLowerCase(locale));
     }
