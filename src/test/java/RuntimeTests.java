@@ -17,16 +17,16 @@ public class RuntimeTests {
     public void test2() {
         StringValidator validator = new StringValidator().withLength(5, 10);
         Assertions.assertDoesNotThrow(() ->
-                validator.validate("test", PrimitiveGoodie.of("12345")));
+                validator.validate("test", PrimitiveGoodie.from("12345")));
         Assertions.assertDoesNotThrow(() ->
-                validator.validate("test", PrimitiveGoodie.of("123456")));
+                validator.validate("test", PrimitiveGoodie.from("123456")));
 
         Assertions.assertThrows(ValidationException.class, () ->
-                validator.validate("test", PrimitiveGoodie.of("")));
+                validator.validate("test", PrimitiveGoodie.from("")));
         Assertions.assertThrows(ValidationException.class, () ->
-                validator.validate("test", PrimitiveGoodie.of("123")));
+                validator.validate("test", PrimitiveGoodie.from("123")));
         Assertions.assertThrows(ValidationException.class, () ->
-                validator.validate("test", PrimitiveGoodie.of("12345678910")));
+                validator.validate("test", PrimitiveGoodie.from("12345678910")));
     }
 
 }

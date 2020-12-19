@@ -1,7 +1,10 @@
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import data.TestConfiguration;
+import net.programmer.igoodie.converter.GoodieToGson;
 import net.programmer.igoodie.converter.GsonToGoodie;
 import net.programmer.igoodie.runtime.ArrayGoodie;
+import net.programmer.igoodie.runtime.ConfigGoodie;
 import net.programmer.igoodie.runtime.ObjectGoodie;
 import net.programmer.igoodie.sanitizer.LowercaseSanitizer;
 import net.programmer.igoodie.schema.ObjectSchema;
@@ -9,6 +12,8 @@ import net.programmer.igoodie.schema.PrimitiveSchema;
 import net.programmer.igoodie.validator.StringValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class UsageTests {
 
@@ -39,7 +44,16 @@ public class UsageTests {
     @Test
     public void test3() {
         JsonElement jsonElement = JsonParser.parseString("{a:123, b:[1,2,3,4,5,6], c:{foo:\"Bar\"}}");
-        System.out.println(GsonToGoodie.convert(jsonElement));
+        ConfigGoodie convertedGoodie = GsonToGoodie.convert(jsonElement);
+        JsonElement convertedJson = GoodieToGson.convert(convertedGoodie);
+        System.out.println(convertedGoodie);
+        System.out.println(convertedJson);
+    }
+
+    @Test
+    public void test4() throws IOException {
+        TestConfiguration configuration = new TestConfiguration();
+        configuration.readGoodies();
     }
 
 }

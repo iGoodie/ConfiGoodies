@@ -52,6 +52,12 @@ public class PrimitiveGoodie implements ConfigGoodie {
         throw new IllegalStateException();
     }
 
+    public Number getNumberValue() {
+        if (Number.class.isAssignableFrom(type))
+            return ((Number) value);
+        throw new IllegalStateException();
+    }
+
     public String getStringValue() {
         if (type == String.class)
             return ((String) value);
@@ -63,7 +69,7 @@ public class PrimitiveGoodie implements ConfigGoodie {
         return value.toString();
     }
 
-    public static PrimitiveGoodie of(Object value) {
+    public static PrimitiveGoodie from(Object value) {
         if (value instanceof String)
             return new PrimitiveGoodie((String) value);
 

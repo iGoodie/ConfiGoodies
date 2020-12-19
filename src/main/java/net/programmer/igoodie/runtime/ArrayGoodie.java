@@ -151,7 +151,7 @@ public class ArrayGoodie implements ConfigGoodie,
 
     public static ArrayGoodie of(Object... elements) {
         return new ArrayGoodie(Stream.of(elements)
-                .map(PrimitiveGoodie::of).collect(Collectors.toList()));
+                .map(PrimitiveGoodie::from).collect(Collectors.toList()));
     }
 
     public static ArrayGoodie of(ConfigGoodie... elements) {

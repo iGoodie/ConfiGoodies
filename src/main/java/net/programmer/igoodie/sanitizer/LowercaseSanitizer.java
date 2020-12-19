@@ -17,7 +17,7 @@ public class LowercaseSanitizer extends ConfigSanitizer<PrimitiveGoodie> {
     @Override
     public PrimitiveGoodie sanitize(PrimitiveGoodie input) {
         String stringValue = input.getStringValue();
-        return PrimitiveGoodie.of(locale == null
+        return PrimitiveGoodie.from(locale == null
                 ? stringValue.toLowerCase()
                 : stringValue.toLowerCase(locale));
     }

@@ -11,7 +11,7 @@ public class PrimitiveSchema extends ConfigSchema<PrimitiveGoodie> {
     protected PrimitiveGoodie defaultValue;
 
     public PrimitiveSchema(String propertyName, Object defaultValue) {
-        this(propertyName, PrimitiveGoodie.of(defaultValue));
+        this(propertyName, PrimitiveGoodie.from(defaultValue));
     }
 
     public PrimitiveSchema(String propertyName, PrimitiveGoodie defaultValue) {

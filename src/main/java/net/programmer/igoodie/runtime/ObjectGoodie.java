@@ -19,7 +19,7 @@ public class ObjectGoodie implements ConfigGoodie,
 
     public ObjectGoodie with(String key, Object value) {
         if (!(value instanceof ConfigGoodie)) {
-            this.properties.put(key, PrimitiveGoodie.of(value));
+            this.properties.put(key, PrimitiveGoodie.from(value));
             return this;
         }
 

@@ -12,13 +12,12 @@ import net.programmer.igoodie.runtime.PrimitiveGoodie;
 public final class GsonToGoodie {
 
     public static ConfigGoodie convert(JsonElement jsonElement) {
-        if (jsonElement.isJsonObject()) {
+        if (jsonElement.isJsonObject())
             return convertObject(jsonElement.getAsJsonObject());
-        } else if (jsonElement.isJsonArray()) {
+        if (jsonElement.isJsonArray())
             return convertArray(jsonElement.getAsJsonArray());
-        } else if (jsonElement.isJsonPrimitive()) {
+        if (jsonElement.isJsonPrimitive())
             return convertPrimitive(jsonElement.getAsJsonPrimitive());
-        }
 
         return null; // <-- No corresponding Goodie type exists
     }
@@ -42,7 +41,7 @@ public final class GsonToGoodie {
     }
 
     public static PrimitiveGoodie convertPrimitive(JsonPrimitive jsonPrimitive) {
-        return PrimitiveGoodie.of(
+        return PrimitiveGoodie.from(
                 jsonPrimitive.isBoolean() ? jsonPrimitive.getAsBoolean()
                         : jsonPrimitive.isString() ? jsonPrimitive.getAsString()
                         : jsonPrimitive.isNumber() ? jsonPrimitive.getAsNumber()
