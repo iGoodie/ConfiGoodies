@@ -1,8 +1,6 @@
 package net.programmer.igoodie.schema;
 
 import net.programmer.igoodie.exception.ValidationException;
-import net.programmer.igoodie.runtime.GoodieElement;
-import net.programmer.igoodie.runtime.GoodieObject;
 import net.programmer.igoodie.runtime.GoodiePrimitive;
 import net.programmer.igoodie.sanitizer.GoodieSanitizer;
 import net.programmer.igoodie.validator.GoodieValidator;
@@ -18,6 +16,13 @@ public class PrimitiveSchema extends GoodieSchema<GoodiePrimitive> {
     public PrimitiveSchema(String propertyName, GoodiePrimitive defaultValue) {
         super(propertyName);
         this.defaultValue = defaultValue;
+
+        try {
+            validate(defaultValue, false);
+
+        } catch (ValidationException e) {
+            throw new InternalError("Default value does not satisfy validation rules", e);
+        }
     }
 
     @SafeVarargs
@@ -28,13 +33,7 @@ public class PrimitiveSchema extends GoodieSchema<GoodiePrimitive> {
 
     @Override
     public GoodiePrimitive getDefaultValue() {
-        GoodiePrimitive defaultGoodie = this.defaultValue.deepCopy();
-        try {
-            return sanitize(validate(defaultGoodie));
-
-        } catch (ValidationException e) {
-            throw new InternalError("Default value does not satisfy validation rules", e);
-        }
+        return sanitize(this.defaultValue.deepCopy());
     }
 
     @Override
