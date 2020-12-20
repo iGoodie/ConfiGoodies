@@ -45,7 +45,12 @@ public class ObjectSchema extends GoodieSchema<GoodieObject> {
         for (String propertyName : schemas.keySet()) {
             // Cursed casting hack, because; Required:capture of <? extends GoodieElement>; Provided:GoodieElement
             GoodieSchema<GoodieElement> propertySchema = (GoodieSchema<GoodieElement>) schemas.get(propertyName);
-            GoodieElement propertyGoodie = copied.get(propertyName).deepCopy();
+            GoodieElement propertyGoodie = copied.computeIfAbsent(propertyName, name -> {
+                GoodieElement defaultValue = propertySchema.getDefaultValue();
+                copied.put(name, defaultValue);
+                result.validatedTo(copied);
+                return defaultValue;
+            }).deepCopy();
 
             if (!GoodieSchema.matchesType(propertySchema, propertyGoodie)) {
                 copied.put(propertyName, propertySchema.getDefaultValue());

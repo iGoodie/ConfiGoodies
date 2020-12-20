@@ -21,7 +21,9 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
 
     public abstract File getFile();
 
-    public abstract GoodieSchema<G> getRootSchema();
+    public GoodieSchema<G> getRootSchema() {
+        return null;
+    }
 
     public G readGoodies() throws IOException {
         File configFile = getFile();
@@ -48,17 +50,24 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
         G readGoodies = readGoodies();
         GoodieSchema<G> rootSchema = getRootSchema();
 
-        SchematicResult<G> result = rootSchema.check(readGoodies);
-        GoodieObjectifier objectifier = new GoodieObjectifier();
+        SchematicResult<G> result = rootSchema != null
+                ? rootSchema.check(readGoodies) : null;
 
-        if (result.isModified()) {
-            File targetFile = getFile();
-            File oldFile = new File(targetFile.getParentFile().getPath() + File.separator + targetFile.getName() + ".old");
+        GoodieObjectifier objectifier = new GoodieObjectifier();
+        File targetFile = getFile();
+        File oldFile = new File(targetFile.getParentFile().getPath() + File.separator + targetFile.getName() + ".old");
+
+        if (result != null && result.isModified()) {
             FileUtilities.writeToFile(format.writeToString(result.getInput()), oldFile);
             FileUtilities.writeToFile(format.writeToString(result.getModified()), targetFile);
             objectifier.fillConfig((GoodieObject) result.getModified(), this);
         } else {
-            objectifier.fillConfig((GoodieObject) result.getInput(), this);
+            G initialGoodie = (G) readGoodies.deepCopy();
+            if (objectifier.fillConfig((GoodieObject) readGoodies, this)) {
+                System.out.println("Modified to -> " + readGoodies);
+                FileUtilities.writeToFile(format.writeToString(initialGoodie), oldFile);
+                FileUtilities.writeToFile(format.writeToString(readGoodies), targetFile);
+            }
         }
 
         return this;

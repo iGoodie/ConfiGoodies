@@ -38,16 +38,16 @@ public class TestConfiguration extends GoodieConfiguration<JsonObject, GoodieObj
         return new File("./test/test_config.json");
     }
 
-    @Override
-    public ObjectSchema getRootSchema() {
-        return ObjectSchema.of(
-                new PrimitiveSchema("username", "UsernameHere")
-                        .withValidator(new StringValidator()),
-                new PrimitiveSchema("yearOfBirth", 1880),
-                ObjectSchema.of("subconfig",
-                        new PrimitiveSchema("flag", false)
-                )
-        );
-    }
+//    @Override
+//    public ObjectSchema getRootSchema() {
+//        return ObjectSchema.of(
+//                new PrimitiveSchema("username", "UsernameHere")
+//                        .withValidator(new StringValidator()),
+//                new PrimitiveSchema("yearOfBirth", 1880),
+//                ObjectSchema.of("subconfig",
+//                        new PrimitiveSchema("flag", false)
+//                )
+//        );
+//    }
 
 }
