@@ -1,6 +1,5 @@
 package net.programmer.igoodie.schema;
 
-import net.programmer.igoodie.runtime.GoodieArray;
 import net.programmer.igoodie.runtime.GoodieElement;
 import net.programmer.igoodie.runtime.GoodieObject;
 import net.programmer.igoodie.sanitizer.GoodieSanitizer;
@@ -47,6 +46,12 @@ public class ObjectSchema extends GoodieSchema<GoodieObject> {
             // Cursed casting hack, because; Required:capture of <? extends GoodieElement>; Provided:GoodieElement
             GoodieSchema<GoodieElement> propertySchema = (GoodieSchema<GoodieElement>) schemas.get(propertyName);
             GoodieElement propertyGoodie = copied.get(propertyName).deepCopy();
+
+            if (!GoodieSchema.matchesType(propertySchema, propertyGoodie)) {
+                copied.put(propertyName, propertySchema.getDefaultValue());
+                result.validatedTo(copied);
+                continue;
+            }
 
             SchematicResult<GoodieElement> checkResult = propertySchema.check(propertyGoodie);
 

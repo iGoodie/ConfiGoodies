@@ -1,7 +1,10 @@
 package net.programmer.igoodie.schema;
 
 import net.programmer.igoodie.exception.ValidationException;
+import net.programmer.igoodie.runtime.GoodieArray;
 import net.programmer.igoodie.runtime.GoodieElement;
+import net.programmer.igoodie.runtime.GoodieObject;
+import net.programmer.igoodie.runtime.GoodiePrimitive;
 import net.programmer.igoodie.sanitizer.GoodieSanitizer;
 import net.programmer.igoodie.validator.GoodieValidator;
 
@@ -91,5 +94,18 @@ public abstract class GoodieSchema<G extends GoodieElement> {
     public abstract G getDefaultValue();
 
     public abstract SchematicResult<G> check(G goodie);
+
+    public static boolean matchesType(GoodieSchema<?> schema, GoodieElement element) {
+        if (schema.getClass() == ObjectSchema.class)
+            return element instanceof GoodieObject;
+
+        if (schema.getClass() == ArraySchema.class)
+            return element instanceof GoodieArray;
+
+        if (schema.getClass() == PrimitiveSchema.class)
+            return element instanceof GoodiePrimitive;
+
+        return false;
+    }
 
 }
