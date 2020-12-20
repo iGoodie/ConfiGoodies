@@ -1,7 +1,6 @@
 package net.programmer.igoodie.schema;
 
 import net.programmer.igoodie.runtime.GoodieArray;
-import net.programmer.igoodie.runtime.GoodieElement;
 
 public class ArraySchema extends GoodieSchema<GoodieArray> {
 
