@@ -9,18 +9,18 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class GoodieSchema<T extends GoodieElement> {
+public abstract class GoodieSchema<G extends GoodieElement> {
 
     protected String propertyName;
-    protected GoodieValidator<T> validator;
-    protected List<GoodieSanitizer<T>> sanitizers;
+    protected GoodieValidator<G> validator;
+    protected List<GoodieSanitizer<G>> sanitizers;
 
     public GoodieSchema(String propertyName) {
         this(propertyName, null);
     }
 
     @SafeVarargs
-    public GoodieSchema(String propertyName, GoodieValidator<T> validator, GoodieSanitizer<T>... sanitizers) {
+    public GoodieSchema(String propertyName, GoodieValidator<G> validator, GoodieSanitizer<G>... sanitizers) {
         this.propertyName = propertyName;
         this.validator = validator;
         this.sanitizers = new LinkedList<>();
@@ -31,32 +31,41 @@ public abstract class GoodieSchema<T extends GoodieElement> {
         return propertyName;
     }
 
-    public GoodieValidator<T> getValidator() {
+    public boolean hasValidator() {
+        return validator != null;
+    }
+
+    public int sanitizerLength() {
+        if (sanitizers == null) return 0;
+        return sanitizers.size();
+    }
+
+    public GoodieValidator<G> getValidator() {
         return validator;
     }
 
-    public List<GoodieSanitizer<T>> getSanitizers() {
+    public List<GoodieSanitizer<G>> getSanitizers() {
         return sanitizers;
     }
 
-    public GoodieSchema<T> withValidator(GoodieValidator<T> validator) {
+    public GoodieSchema<G> withValidator(GoodieValidator<G> validator) {
         this.validator = validator;
         return this;
     }
 
     @SafeVarargs
-    public final GoodieSchema<T> withSanitizers(GoodieSanitizer<T>... sanitizers) {
+    public final GoodieSchema<G> withSanitizers(GoodieSanitizer<G>... sanitizers) {
         if (this.sanitizers == null)
             this.sanitizers = new LinkedList<>();
         this.sanitizers.addAll(Arrays.asList(sanitizers));
         return this;
     }
 
-    public T validate(T goodie) {
+    public G validate(G goodie) {
         return validate(goodie, true);
     }
 
-    public T validate(T goodie, boolean safe) {
+    public G validate(G goodie, boolean safe) {
         if (validator != null) {
             try {
                 validator.validate(propertyName, goodie);
@@ -68,10 +77,10 @@ public abstract class GoodieSchema<T extends GoodieElement> {
         return goodie;
     }
 
-    public T sanitize(T goodie) {
+    public G sanitize(G goodie) {
         if (sanitizers.size() != 0) {
-            T sanitizedValue = goodie;
-            for (GoodieSanitizer<T> sanitizer : sanitizers) {
+            G sanitizedValue = goodie;
+            for (GoodieSanitizer<G> sanitizer : sanitizers) {
                 sanitizedValue = sanitizer.sanitize(sanitizedValue);
             }
             return sanitizedValue;
@@ -79,8 +88,8 @@ public abstract class GoodieSchema<T extends GoodieElement> {
         return goodie;
     }
 
-    public abstract T getDefaultValue();
+    public abstract G getDefaultValue();
 
-    public abstract SchematicResult<T> check(T goodie);
+    public abstract SchematicResult<G> check(G goodie);
 
 }
