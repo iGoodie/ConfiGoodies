@@ -102,13 +102,15 @@ public class GoodieObject implements GoodieElement,
 
     @Override
     public boolean equals(Object o) {
-        // TODO: Check types too (?)
-        return properties.equals(o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GoodieObject entries = (GoodieObject) o;
+        return Objects.equals(properties, entries.properties);
     }
 
     @Override
     public int hashCode() {
-        return properties.hashCode();
+        return Objects.hash(properties);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package net.programmer.igoodie.runtime;
 
+import java.util.Objects;
+
 public class GoodiePrimitive implements GoodieElement {
 
     private Class<?> type;
@@ -67,6 +69,20 @@ public class GoodiePrimitive implements GoodieElement {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GoodiePrimitive that = (GoodiePrimitive) o;
+        return Objects.equals(type, that.type) &&
+                Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, value);
     }
 
     public static GoodiePrimitive from(Object value) {

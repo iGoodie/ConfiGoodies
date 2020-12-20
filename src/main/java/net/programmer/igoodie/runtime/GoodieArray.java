@@ -149,6 +149,19 @@ public class GoodieArray implements GoodieElement,
                 .collect(Collectors.joining(",")) + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GoodieArray that = (GoodieArray) o;
+        return Objects.equals(elements, that.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(elements);
+    }
+
     public static GoodieArray of(Object... elements) {
         return new GoodieArray(Stream.of(elements)
                 .map(GoodiePrimitive::from).collect(Collectors.toList()));

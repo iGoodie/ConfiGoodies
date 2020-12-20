@@ -1,5 +1,6 @@
 package net.programmer.igoodie.schema;
 
+import net.programmer.igoodie.exception.ValidationException;
 import net.programmer.igoodie.runtime.GoodieElement;
 import net.programmer.igoodie.sanitizer.GoodieSanitizer;
 import net.programmer.igoodie.validator.GoodieValidator;
@@ -51,21 +52,35 @@ public abstract class GoodieSchema<T extends GoodieElement> {
         return this;
     }
 
-    @SuppressWarnings("unchecked")
-    public T checkAndSanitize(T value) {
-        if (validator != null) validator.validate(propertyName, value);
+    public T validate(T goodie) {
+        return validate(goodie, true);
+    }
 
-        if (sanitizers.size() == 0) return value;
-
-        T sanitizedValue = (T) value.deepCopy();
-        for (GoodieSanitizer<T> sanitizer : sanitizers) {
-            sanitizedValue = sanitizer.sanitize(sanitizedValue);
+    public T validate(T goodie, boolean safe) {
+        if (validator != null) {
+            try {
+                validator.validate(propertyName, goodie);
+            } catch (ValidationException e) {
+                if (!safe) throw e;
+                return getDefaultValue();
+            }
         }
-        return sanitizedValue;
+        return goodie;
+    }
+
+    public T sanitize(T goodie) {
+        if (sanitizers.size() != 0) {
+            T sanitizedValue = goodie;
+            for (GoodieSanitizer<T> sanitizer : sanitizers) {
+                sanitizedValue = sanitizer.sanitize(sanitizedValue);
+            }
+            return sanitizedValue;
+        }
+        return goodie;
     }
 
     public abstract T getDefaultValue();
 
-    public abstract SchematicResult<?> check(GoodieElement goodie);
+    public abstract SchematicResult<T> check(T goodie);
 
 }

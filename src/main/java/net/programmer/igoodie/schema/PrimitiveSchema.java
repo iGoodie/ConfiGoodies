@@ -30,7 +30,7 @@ public class PrimitiveSchema extends GoodieSchema<GoodiePrimitive> {
     public GoodiePrimitive getDefaultValue() {
         GoodiePrimitive defaultGoodie = this.defaultValue.deepCopy();
         try {
-            return checkAndSanitize(defaultGoodie);
+            return sanitize(validate(defaultGoodie));
 
         } catch (ValidationException e) {
             throw new InternalError("Default value does not satisfy validation rules", e);
@@ -38,8 +38,22 @@ public class PrimitiveSchema extends GoodieSchema<GoodiePrimitive> {
     }
 
     @Override
-    public SchematicResult<?> check(GoodieElement goodie) {
-        return null;
+    public SchematicResult<GoodiePrimitive> check(GoodiePrimitive goodie) {
+        SchematicResult<GoodiePrimitive> result = new SchematicResult<>(goodie);
+
+        GoodiePrimitive validated = validate(goodie);
+        if (!validated.equals(goodie)) {
+            result.validatedTo(validated.deepCopy());
+            return result;
+        }
+
+        GoodiePrimitive sanitized = sanitize(goodie);
+        if (!sanitized.equals(goodie)) {
+            result.sanitizedTo(sanitized.deepCopy());
+            return result;
+        }
+
+        return result;
     }
 
 }

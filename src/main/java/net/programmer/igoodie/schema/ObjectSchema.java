@@ -38,11 +38,7 @@ public class ObjectSchema extends GoodieSchema<GoodieObject> {
     }
 
     @Override
-    public SchematicResult<?> check(GoodieElement goodie) {
-        if (!(goodie instanceof GoodieObject))
-            return SchematicResult.invalidType(new GoodieObject());
-
-        // TODO:
+    public SchematicResult<GoodieObject> check(GoodieObject goodie) {
         return null;
     }
 
