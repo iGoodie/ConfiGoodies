@@ -1,8 +1,11 @@
 package net.programmer.igoodie;
 
 import net.programmer.igoodie.format.GoodieFormat;
+import net.programmer.igoodie.objectify.GoodieObjectifier;
 import net.programmer.igoodie.runtime.GoodieElement;
+import net.programmer.igoodie.runtime.GoodieObject;
 import net.programmer.igoodie.schema.GoodieSchema;
+import net.programmer.igoodie.schema.SchematicResult;
 import net.programmer.igoodie.util.FileUtilities;
 
 import java.io.File;
@@ -20,7 +23,7 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
 
     public abstract GoodieSchema<G> getRootSchema();
 
-    public GoodieElement readGoodies() throws IOException {
+    public G readGoodies() throws IOException {
         File configFile = getFile();
 
         if (configFile.isDirectory())
@@ -39,6 +42,26 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
 
         E externalConfig = format.readFromString(text);
         return format.writeToGoodie(externalConfig);
+    }
+
+    public GoodieConfiguration readAndFill() throws IOException, InstantiationException, IllegalAccessException {
+        G readGoodies = readGoodies();
+        GoodieSchema<G> rootSchema = getRootSchema();
+
+        SchematicResult<G> result = rootSchema.check(readGoodies);
+        GoodieObjectifier objectifier = new GoodieObjectifier();
+
+        if (result.isModified()) {
+            // TODO: Move current to backup
+            E externalObject = format.readFromGoodie(result.getModified());
+            String data = format.writeToString(externalObject);
+            FileUtilities.writeToFile(data, getFile());
+            objectifier.fillConfig((GoodieObject) result.getModified(), this);
+        } else {
+            objectifier.fillConfig((GoodieObject) result.getInput(), this);
+        }
+
+        return this;
     }
 
 }

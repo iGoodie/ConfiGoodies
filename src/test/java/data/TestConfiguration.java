@@ -29,6 +29,10 @@ public class TestConfiguration extends GoodieConfiguration<JsonObject, GoodieObj
         super(new GsonGoodieFormat());
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public File getFile() {
         return new File("./test/test_config.json");
