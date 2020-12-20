@@ -16,7 +16,7 @@ public class ArraySchema extends GoodieSchema<GoodieArray> {
     @Override
     public SchematicResult<GoodieArray> check(GoodieArray goodie) {
         GoodieArray copied = (GoodieArray) goodie.deepCopy();
-        SchematicResult<GoodieArray> result = new SchematicResult<>(copied);
+        SchematicResult<GoodieArray> result = new SchematicResult<>(goodie);
 
         GoodieArray validated = validate(goodie);
         if (!validated.equals(goodie)) {

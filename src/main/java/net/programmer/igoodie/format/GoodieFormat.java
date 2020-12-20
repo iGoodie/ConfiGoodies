@@ -12,4 +12,9 @@ public abstract class GoodieFormat<E, G extends GoodieElement> {
 
     public abstract E readFromString(String text); // <- TODO: Mind Parse exceptions
 
+    public String writeToString(G goodie) {
+        E external = readFromGoodie(goodie);
+        return writeToString(external);
+    }
+
 }

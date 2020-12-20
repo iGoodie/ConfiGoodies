@@ -40,7 +40,7 @@ public class ObjectSchema extends GoodieSchema<GoodieObject> {
     @Override
     public SchematicResult<GoodieObject> check(GoodieObject goodie) {
         GoodieObject copied = (GoodieObject) goodie.deepCopy();
-        SchematicResult<GoodieObject> result = new SchematicResult<>(copied);
+        SchematicResult<GoodieObject> result = new SchematicResult<>(goodie);
 
         for (String propertyName : schemas.keySet()) {
             // Cursed casting hack, because; Required:capture of <? extends GoodieElement>; Provided:GoodieElement
@@ -53,10 +53,10 @@ public class ObjectSchema extends GoodieSchema<GoodieObject> {
                 continue;
             }
 
-            SchematicResult<GoodieElement> checkResult = propertySchema.check(propertyGoodie);
+            SchematicResult<GoodieElement> checkResult = propertySchema.check(propertyGoodie.deepCopy());
 
             if (checkResult.isModified()) {
-                copied.put(propertyName, checkResult.getModified());
+                copied.put(propertyName, checkResult.getModified().deepCopy());
                 if (checkResult.isValidated())
                     result.validatedTo(copied);
                 else if (checkResult.isSanitized())

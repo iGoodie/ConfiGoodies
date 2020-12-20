@@ -52,10 +52,10 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
         GoodieObjectifier objectifier = new GoodieObjectifier();
 
         if (result.isModified()) {
-            // TODO: Move current to backup
-            E externalObject = format.readFromGoodie(result.getModified());
-            String data = format.writeToString(externalObject);
-            FileUtilities.writeToFile(data, getFile());
+            File targetFile = getFile();
+            File oldFile = new File(targetFile.getParentFile().getPath() + File.separator + targetFile.getName() + ".old");
+            FileUtilities.writeToFile(format.writeToString(result.getInput()), oldFile);
+            FileUtilities.writeToFile(format.writeToString(result.getModified()), targetFile);
             objectifier.fillConfig((GoodieObject) result.getModified(), this);
         } else {
             objectifier.fillConfig((GoodieObject) result.getInput(), this);

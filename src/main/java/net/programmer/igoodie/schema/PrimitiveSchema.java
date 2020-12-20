@@ -38,15 +38,16 @@ public class PrimitiveSchema extends GoodieSchema<GoodiePrimitive> {
 
     @Override
     public SchematicResult<GoodiePrimitive> check(GoodiePrimitive goodie) {
+        GoodiePrimitive copied = goodie.deepCopy();
         SchematicResult<GoodiePrimitive> result = new SchematicResult<>(goodie);
 
-        GoodiePrimitive validated = validate(goodie);
+        GoodiePrimitive validated = validate(copied);
         if (!validated.equals(goodie)) {
             result.validatedTo(validated.deepCopy());
             return result;
         }
 
-        GoodiePrimitive sanitized = sanitize(goodie);
+        GoodiePrimitive sanitized = sanitize(copied);
         if (!sanitized.equals(goodie)) {
             result.sanitizedTo(sanitized.deepCopy());
             return result;

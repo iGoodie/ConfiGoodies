@@ -21,6 +21,12 @@ public class FileUtilities {
     }
 
     public static void writeToFile(String text, File file) throws IOException {
+        if (!file.exists()) {
+            System.out.println(file);
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+
         FileWriter fileWriter = new FileWriter(file);
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.print(text);
