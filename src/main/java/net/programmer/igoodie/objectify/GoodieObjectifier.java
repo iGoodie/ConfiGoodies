@@ -1,11 +1,17 @@
 package net.programmer.igoodie.objectify;
 
 import net.programmer.igoodie.annotation.Goodie;
+import net.programmer.igoodie.runtime.GoodieArray;
 import net.programmer.igoodie.runtime.GoodieElement;
 import net.programmer.igoodie.runtime.GoodieObject;
 import net.programmer.igoodie.runtime.GoodiePrimitive;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GoodieObjectifier {
 
@@ -21,11 +27,17 @@ public class GoodieObjectifier {
                 GoodieElement correspondingGoodie = goodieObject.get(field.getName());
 
                 if (correspondingGoodie == null) {
-                    System.out.println("No goodie for " + field.getName());
                     if (field.getType().isPrimitive() || field.getType() == String.class) {
                         GoodiePrimitive defaultValue = GoodiePrimitive.from(getDefaultValue(field.getType()));
                         fillField(field, configObject, defaultValue);
                         goodieObject.put(field.getName(), defaultValue);
+                        modified = true;
+
+                    } else if (List.class.isAssignableFrom(field.getType())) {
+                        GoodieArray defaultArray = (GoodieArray) goodieObject.getOrDefault(field.getName(), new GoodieArray());
+                        Object fieldValue = field.get(configObject) == null ? new LinkedList<>() : field.get(configObject);
+                        fillField(field, configObject, defaultArray);
+                        goodieObject.put(field.getName(), defaultArray);
                         modified = true;
 
                     } else {
@@ -39,6 +51,9 @@ public class GoodieObjectifier {
                 } else if (correspondingGoodie instanceof GoodiePrimitive) {
                     modified |= fillField(field, configObject, ((GoodiePrimitive) correspondingGoodie));
 
+                } else if (correspondingGoodie instanceof GoodieArray) {
+                    modified |= fillField(field, configObject, (GoodieArray) correspondingGoodie);
+
                 } else if (correspondingGoodie instanceof GoodieObject) {
                     Object fieldValue = field.get(configObject);
                     if (fieldValue == null) field.set(configObject, field.getType().newInstance());
@@ -48,6 +63,45 @@ public class GoodieObjectifier {
         }
 
         return modified;
+    }
+
+    private boolean fillField(Field field, Object object, GoodieArray goodieArray) throws IllegalAccessException {
+        try {
+            field.setAccessible(true);
+
+            boolean modified = false;
+
+            Class<?> listType = Class.forName(field.getGenericType().getTypeName().split("<", 2)[1].replace(">", ""));
+            LinkedList<Object> linkedList = new LinkedList<>();
+
+            for (int i = goodieArray.size() - 1; i >= 0; i--) {
+                GoodieElement goodieElement = goodieArray.get(i);
+                if (goodieElement instanceof GoodiePrimitive) {
+                    Object value = ((GoodiePrimitive) goodieElement).getValue();
+                    if (listType.isInstance(value))
+                        linkedList.add(value);
+                    else {
+                        goodieArray.remove(i);
+                        modified = true;
+                    }
+
+                } else if (goodieElement instanceof GoodieObject) {
+                    Object newValue = listType.newInstance();
+                    modified |= fillConfig((GoodieObject) goodieElement, newValue);
+                    linkedList.add(newValue);
+                }
+            }
+
+            Collections.reverse(linkedList);
+
+            field.set(object, linkedList);
+            return modified;
+
+        } catch (IllegalArgumentException | ClassNotFoundException | InstantiationException e) {
+            System.out.println("Invalid type for " + field.getName());
+            field.set(getDefaultValue(field.getType()), object); // XXX
+            return true;
+        }
     }
 
     private boolean fillField(Field field, Object object, GoodiePrimitive goodie) throws IllegalAccessException {
@@ -103,6 +157,10 @@ public class GoodieObjectifier {
         if (type == String.class)
             return "";
         return null;
+    }
+
+    private void defaultConstructorCheck() {
+        // TODO: Implement and call when .newInstance calls are made
     }
 
 }

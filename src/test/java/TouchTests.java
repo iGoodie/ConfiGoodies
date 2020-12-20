@@ -91,7 +91,8 @@ public class TouchTests {
     @Test
     public void test6() throws IllegalAccessException, IOException, InstantiationException {
         TestConfiguration configuration = (TestConfiguration) new TestConfiguration().readAndFill();
-        System.out.println("Username = " + configuration.getUsername());
+//        System.out.println("Username = " + configuration.getUsername());
+        System.out.println(configuration);
     }
 
 }

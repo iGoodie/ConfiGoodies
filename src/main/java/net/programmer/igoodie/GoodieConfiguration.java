@@ -64,7 +64,6 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
         } else {
             G initialGoodie = (G) readGoodies.deepCopy();
             if (objectifier.fillConfig((GoodieObject) readGoodies, this)) {
-                System.out.println("Modified to -> " + readGoodies);
                 FileUtilities.writeToFile(format.writeToString(initialGoodie), oldFile);
                 FileUtilities.writeToFile(format.writeToString(readGoodies), targetFile);
             }

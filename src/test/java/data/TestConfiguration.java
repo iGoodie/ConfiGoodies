@@ -10,17 +10,19 @@ import net.programmer.igoodie.schema.PrimitiveSchema;
 import net.programmer.igoodie.validator.StringValidator;
 
 import java.io.File;
+import java.util.List;
 
 public class TestConfiguration extends GoodieConfiguration<JsonObject, GoodieObject> {
 
-    @Goodie
-    private String username;
+    @Goodie private String username;
 
-    @Goodie
-    private int yearOfBirth;
+    @Goodie private int yearOfBirth;
 
-    @Goodie
-    private TestSubconfig subconfig;
+    @Goodie private List<String> moderators;
+
+    @Goodie private TestSubconfig subconfig;
+
+    @Goodie private List<TestSubconfig> subconfigList;
 
     private Object someInternalValue;
     public Object someInternalValue2;
@@ -31,6 +33,10 @@ public class TestConfiguration extends GoodieConfiguration<JsonObject, GoodieObj
 
     public String getUsername() {
         return username;
+    }
+
+    public List<String> getModerators() {
+        return moderators;
     }
 
     @Override
@@ -49,5 +55,18 @@ public class TestConfiguration extends GoodieConfiguration<JsonObject, GoodieObj
 //                )
 //        );
 //    }
+
+    @Override
+    public String toString() {
+        return "TestConfiguration{" +
+                "username='" + username + '\'' +
+                ", yearOfBirth=" + yearOfBirth +
+                ", moderators=" + moderators +
+                ", subconfig=" + subconfig +
+                ", subconfigList=" + subconfigList +
+                ", someInternalValue=" + someInternalValue +
+                ", someInternalValue2=" + someInternalValue2 +
+                '}';
+    }
 
 }

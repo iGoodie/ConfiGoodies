@@ -4,7 +4,7 @@ import net.programmer.igoodie.runtime.GoodiePrimitive;
 
 import java.util.Locale;
 
-public class LowercaseSanitizer extends GoodieSanitizer<GoodiePrimitive> {
+public class LowercaseSanitizer implements GoodieSanitizer<GoodiePrimitive> {
 
     protected Locale locale;
 

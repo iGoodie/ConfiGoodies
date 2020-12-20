@@ -44,6 +44,28 @@ public class GoodiePrimitive implements GoodieElement {
         return type;
     }
 
+    public Object getValue() {
+        if (Number.class.equals(this.getType())) {
+            Number number = this.getNumberValue();
+
+            if (this.getType() == int.class) {
+                return number.intValue();
+            } else if (this.getType() == long.class) {
+                return number.longValue();
+            } else if (this.getType() == float.class) {
+                return number.floatValue();
+            } else if (this.getType() == double.class) {
+                return number.doubleValue();
+            } else if (this.getType() == short.class) {
+                return number.shortValue();
+            } else if (this.getType() == byte.class) {
+                return number.byteValue();
+            }
+        }
+
+        return this.getRawValue();
+    }
+
     public Object getRawValue() {
         return value;
     }
