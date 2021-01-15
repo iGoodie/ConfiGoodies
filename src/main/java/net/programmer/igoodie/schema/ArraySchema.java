@@ -1,33 +1,58 @@
 package net.programmer.igoodie.schema;
 
 import net.programmer.igoodie.runtime.GoodieArray;
+import net.programmer.igoodie.runtime.GoodieElement;
+
+import java.util.Arrays;
 
 public class ArraySchema extends GoodieSchema<GoodieArray> {
 
-    public ArraySchema(String propertyName) {
+    protected GoodieSchema<? extends GoodieElement> elementSchema;
+    protected GoodieArray defaultValue;
+
+    public ArraySchema(String propertyName, GoodieSchema<? extends GoodieElement> elementSchema) {
         super(propertyName);
+        this.elementSchema = elementSchema;
     }
 
     @Override
     public GoodieArray getDefaultValue() {
-        return new GoodieArray();
+        return defaultValue == null ? new GoodieArray() : defaultValue.deepCopy();
+    }
+
+    public ArraySchema withPreGeneratedValues(GoodieElement... elements) {
+        GoodieArray defaultArray = new GoodieArray();
+        defaultArray.addAll(Arrays.asList(elements));
+        this.defaultValue = defaultArray;
+
+        return this;
     }
 
     @Override
     public SchematicResult<GoodieArray> check(GoodieArray goodie) {
-        GoodieArray copied = (GoodieArray) goodie.deepCopy();
+        GoodieArray copied = goodie.deepCopy();
         SchematicResult<GoodieArray> result = new SchematicResult<>(goodie);
 
-        GoodieArray validated = validate(goodie);
-        if (!validated.equals(goodie)) {
-            result.validatedTo(validated);
-            return result;
-        }
+        GoodieSchema<GoodieElement> schema = (GoodieSchema<GoodieElement>) this.elementSchema;
 
-        GoodieArray sanitized = sanitize(goodie);
-        if (!sanitized.equals(goodie)) {
-            result.sanitizedTo(sanitized);
-            return result;
+        for (int i = 0; i < copied.size(); i++) {
+            GoodieElement element = copied.get(i);
+
+            if (!GoodieSchema.matchesType(this.elementSchema, element)) {
+                copied.set(i, this.elementSchema.getDefaultValue());
+                result.validatedTo(copied);
+                continue;
+            }
+
+            SchematicResult<GoodieElement> checkResult = schema.check(element.deepCopy());
+
+            if (checkResult.isModified()) {
+                copied.set(i, checkResult.getModified().deepCopy());
+                if (checkResult.isValidated())
+                    result.validatedTo(copied);
+                else if (checkResult.isSanitized())
+                    result.sanitizedTo(copied);
+            }
         }
 
         return result;

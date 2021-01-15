@@ -32,7 +32,7 @@ public class GoodieObject implements GoodieElement,
     }
 
     @Override
-    public GoodieElement deepCopy() {
+    public GoodieObject deepCopy() {
         GoodieObject objectGoodie = new GoodieObject();
         this.properties.forEach((name, value) -> {
             objectGoodie.properties.put(name, value.deepCopy());

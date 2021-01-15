@@ -19,7 +19,7 @@ public class GoodieArray implements GoodieElement,
     }
 
     @Override
-    public GoodieElement deepCopy() {
+    public GoodieArray deepCopy() {
         GoodieArray arrayGoodie = new GoodieArray();
         for (GoodieElement element : this.elements) {
             arrayGoodie.elements.add(element.deepCopy());

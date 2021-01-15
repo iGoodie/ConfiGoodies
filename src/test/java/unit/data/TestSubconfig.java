@@ -1,4 +1,4 @@
-package data;
+package unit.data;
 
 import net.programmer.igoodie.annotation.Goodie;
 

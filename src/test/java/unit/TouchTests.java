@@ -1,6 +1,7 @@
+package unit;
+
 import com.google.gson.JsonObject;
-import data.TestConfiguration;
-import net.programmer.igoodie.GoodieConfiguration;
+import unit.data.TestConfiguration;
 import net.programmer.igoodie.format.GsonGoodieFormat;
 import net.programmer.igoodie.objectify.GoodieObjectifier;
 import net.programmer.igoodie.runtime.GoodieObject;
@@ -64,7 +65,7 @@ public class TouchTests {
     @Test
     public void test4() {
         ObjectSchema schema = ObjectSchema.of(
-                new ArraySchema("moderators")
+                new ArraySchema("moderators", new PrimitiveSchema("$root", ""))
         );
 
         GsonGoodieFormat format = new GsonGoodieFormat();

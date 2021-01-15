@@ -1,13 +1,10 @@
-package data;
+package unit.data;
 
 import com.google.gson.JsonObject;
 import net.programmer.igoodie.GoodieConfiguration;
 import net.programmer.igoodie.annotation.Goodie;
 import net.programmer.igoodie.format.GsonGoodieFormat;
 import net.programmer.igoodie.runtime.GoodieObject;
-import net.programmer.igoodie.schema.ObjectSchema;
-import net.programmer.igoodie.schema.PrimitiveSchema;
-import net.programmer.igoodie.validator.StringValidator;
 
 import java.io.File;
 import java.util.List;

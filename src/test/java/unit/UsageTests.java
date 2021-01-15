@@ -1,6 +1,8 @@
+package unit;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import data.TestConfiguration;
+import unit.data.TestConfiguration;
 import net.programmer.igoodie.converter.GoodieToGson;
 import net.programmer.igoodie.converter.GsonToGoodie;
 import net.programmer.igoodie.runtime.GoodieArray;
@@ -11,7 +13,6 @@ import net.programmer.igoodie.schema.ObjectSchema;
 import net.programmer.igoodie.schema.PrimitiveSchema;
 import net.programmer.igoodie.util.CommonPatterns;
 import net.programmer.igoodie.validator.StringValidator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

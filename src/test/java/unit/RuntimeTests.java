@@ -1,3 +1,5 @@
+package unit;
+
 import net.programmer.igoodie.exception.ValidationException;
 import net.programmer.igoodie.runtime.GoodiePrimitive;
 import net.programmer.igoodie.validator.StringValidator;
