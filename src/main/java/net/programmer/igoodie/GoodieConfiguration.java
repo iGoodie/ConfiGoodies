@@ -47,6 +47,8 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
     }
 
     public GoodieConfiguration readAndFill() throws IOException, InstantiationException, IllegalAccessException {
+        boolean freshGeneration = !getFile().exists();
+
         G readGoodies = readGoodies();
         GoodieSchema<G> rootSchema = getRootSchema();
 
@@ -58,13 +60,13 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
         File oldFile = new File(targetFile.getParentFile().getPath() + File.separator + targetFile.getName() + ".old");
 
         if (result != null && result.isModified()) {
-            if (targetFile.exists()) FileUtilities.writeToFile(format.writeToString(result.getInput()), oldFile);
+            if (!freshGeneration) FileUtilities.writeToFile(format.writeToString(result.getInput()), oldFile);
             FileUtilities.writeToFile(format.writeToString(result.getModified()), targetFile);
             objectifier.fillConfig((GoodieObject) result.getModified(), this);
         } else {
             G initialGoodie = (G) readGoodies.deepCopy();
             if (objectifier.fillConfig((GoodieObject) readGoodies, this)) {
-                if (targetFile.exists()) FileUtilities.writeToFile(format.writeToString(initialGoodie), oldFile);
+                if (!freshGeneration) FileUtilities.writeToFile(format.writeToString(initialGoodie), oldFile);
                 FileUtilities.writeToFile(format.writeToString(readGoodies), targetFile);
             }
         }
