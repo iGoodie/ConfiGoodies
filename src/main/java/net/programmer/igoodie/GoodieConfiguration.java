@@ -58,13 +58,13 @@ public abstract class GoodieConfiguration<E, G extends GoodieElement> {
         File oldFile = new File(targetFile.getParentFile().getPath() + File.separator + targetFile.getName() + ".old");
 
         if (result != null && result.isModified()) {
-            FileUtilities.writeToFile(format.writeToString(result.getInput()), oldFile);
+            if (targetFile.exists()) FileUtilities.writeToFile(format.writeToString(result.getInput()), oldFile);
             FileUtilities.writeToFile(format.writeToString(result.getModified()), targetFile);
             objectifier.fillConfig((GoodieObject) result.getModified(), this);
         } else {
             G initialGoodie = (G) readGoodies.deepCopy();
             if (objectifier.fillConfig((GoodieObject) readGoodies, this)) {
-                FileUtilities.writeToFile(format.writeToString(initialGoodie), oldFile);
+                if (targetFile.exists()) FileUtilities.writeToFile(format.writeToString(initialGoodie), oldFile);
                 FileUtilities.writeToFile(format.writeToString(readGoodies), targetFile);
             }
         }
